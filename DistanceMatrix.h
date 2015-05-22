@@ -18,6 +18,8 @@ public:
     void set(int i, int j, int num);
     int get(int i, int j);
     
+    inline int getPnts(){return points;};
+    
     void printMatrix();
 private:
     int points;

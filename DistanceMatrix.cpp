@@ -53,7 +53,7 @@ int DistanceMatrix::getPosDMat(int i, int j) {
     i = k;
   }
   
-  return points*(i-1) - (i*i+i)/2 + j;
+  return points*(i-1) - (i*i+i)/2 + j - 1;
 }
 
 void DistanceMatrix::set(int i, int j, int num) {
