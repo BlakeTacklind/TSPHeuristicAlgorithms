@@ -23,9 +23,11 @@ public:
     Tour FarthestInsertion();
 private:
     
+    double getInnerDistancePntwise(int i, int j, int c);
     double getInnerDistance(int a, int b, int d);
     list<string> parseString(string line);
     bool inTour(int i, int* tr);
+    bool inTour(int i, list<int> tr);
     
     DistanceMatrix distMatrix;
     int points;

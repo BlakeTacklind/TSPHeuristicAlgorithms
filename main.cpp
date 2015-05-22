@@ -22,7 +22,6 @@ int main(int argc, char** argv) {
   }
   
   DistanceFileHandler d = DistanceFileHandler(argv[1]);
-  cout << "try me2" <<endl;
   Tour t = d.NearestNeighbor();
   cout << t.getlength() << endl;
   t.printTour();

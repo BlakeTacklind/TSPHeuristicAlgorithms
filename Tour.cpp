@@ -12,7 +12,7 @@
 using namespace std;
 
 
-Tour::Tour(int* tr, DistanceMatrix dMat, int pnts, int l) {
+Tour::Tour(int* tr, DistanceMatrix* dMat, int pnts, int l) {
   points = pnts;
   
   distMatrix = DistanceMatrix(points);
@@ -22,7 +22,7 @@ Tour::Tour(int* tr, DistanceMatrix dMat, int pnts, int l) {
     cout << "tour failed to malloc!" << endl;
   }
   
-  distMatrix = DistanceMatrix(dMat);
+  distMatrix = DistanceMatrix(*dMat);
   
   for (int i = 0; i < pnts; i++)
     tour[i] = tr[i];

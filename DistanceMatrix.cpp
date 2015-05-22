@@ -23,7 +23,7 @@ DistanceMatrix::DistanceMatrix(int p) {
     exit(-1);
   }
   
-  cout << points << " " << size << endl;
+  //cout << points << " " << size << endl;
 }
 
 DistanceMatrix::DistanceMatrix(const DistanceMatrix& orig) {

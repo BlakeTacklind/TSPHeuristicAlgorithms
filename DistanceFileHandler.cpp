@@ -60,7 +60,7 @@ DistanceFileHandler::DistanceFileHandler(char* input) {
     //cout << "ummm" <<endl;
     //cout << "i:" << i << " j:" << j << " d:" << getPosDMat(i,j) << endl;
   }
-  cout << "umm" <<endl;
+  //cout << "umm" <<endl;
   file.close();
 }
 
@@ -98,11 +98,7 @@ DistanceFileHandler::~DistanceFileHandler() {
 }
 
 Tour DistanceFileHandler::NearestNeighbor() {
-  int* tr = (int*) malloc(sizeof(int) * points);
-  if (tr == NULL){
-    cout << "failed to malloc tour for nearest neighbor" << endl;
-    exit(-1);
-  }
+  int tr[points] ;
   
   //find initial smallest
   int si, sj, l=INT_MAX;
@@ -141,15 +137,9 @@ Tour DistanceFileHandler::NearestNeighbor() {
     length += l;
     tr[i+1] = sj;
   }
-  cout <<length << "+" << distMatrix.get(tr[0], tr[points-1])<<endl;
-  length += distMatrix.get(tr[0], tr[points-1]);
   
-  cout << length << ":";
-  for (int i = 0; i < points; i++){
-    cout << tr[i] <<",";
-  }
-  
-  return Tour(tr, distMatrix, points,length);
+  length+=distMatrix.get(tr[0],tr[points-1]);
+  return Tour(tr, &distMatrix, points,length);
 }
 
 bool DistanceFileHandler::inTour(int i, int* tr) {
@@ -162,7 +152,52 @@ bool DistanceFileHandler::inTour(int i, int* tr) {
   return false;
 }
 
+Tour DistanceFileHandler::FarthestInsertion() {
+  int l=0;
+  int si,sj=0;
+  for(int i =1;i<points;i++)
+    for(int j=i+1;j<=points;j++){
+      int t;
+      if (l<(t=distMatrix.get(i,j))){
+        si=i;
+        sj=j;
+        l=t;
+      }
+    }
+  
+  list<int> tr;
+  
+  tr.push_front(si);
+  tr.push_front(sj);
+  
+  
+  for(int j=1;j<points;j++){
+    double s=0;
+    int sk,sc=0;
+    for(int i=1;i<points;i++){
+      if(!inTour(i,tr)){
+        for(int k = 1;k<points && tr[k]!= 0;k++){
+          double t = getInnerDistancePntwise(tr[k],tr[k-1],i);
+          if (t>s){
+            sc=i;
+            sk=k;
+          }
+        }
+      }
+    }
+    
+    //INSERT ELEMENT INTO TOUR
+  }
+  
+  //RETURN TOUR
+}
 
+bool DistanceFileHandler::inTour(int i, list<int> tr){
+  for(iterator it=tr.begin();it!=tr.end();++it)
+    if(i==*it) return true;
+  
+  return false;
+}
 
 /*
  * d is the length of the line segment to check distance to
@@ -172,6 +207,10 @@ bool DistanceFileHandler::inTour(int i, int* tr) {
  * with that area formula.
  */
 double getInnerDistance(int a, int b, int d){
-  double p = (a + b + d) / 2;
+  double p = (a + b + d) / 2.0;
   return 2 * sqrt(p*(p-a)*(p-b)*(p-d)) / d;
+}
+
+double DistanceFileHandler::getInnerDistancePntwise(int i, int j, int c) {
+  return getInnerDistance(distMatrix.get(i,c),distMatrix.get(j,c),distMatrix.get(i,j));
 }
