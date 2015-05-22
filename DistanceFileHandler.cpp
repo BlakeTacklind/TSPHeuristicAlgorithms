@@ -9,6 +9,8 @@
 #include <math.h>
 #include <iostream>
 #include <fstream>
+#include <cstdlib>
+#include <climits>
 using namespace std;
 
 DistanceFileHandler::DistanceFileHandler(char* input) {
