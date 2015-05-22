@@ -19,11 +19,11 @@ Tour::Tour(int* tr, DistanceMatrix dMat, int pnts, int l) {
   distMatrix = DistanceMatrix(points);
   tour = (int*)malloc(sizeof(int)*points);
   
-  if(distMatrix == NULL || tour == NULL){
+  if(tour == NULL){
     cout << "tour failed to malloc!" << endl;
   }
   
-  distMatrix = DistanceMatrix(&dMat);
+  distMatrix = DistanceMatrix(dMat);
   
   for (int i = 0; i < pnts; i++)
     tour[i] = tr[i];

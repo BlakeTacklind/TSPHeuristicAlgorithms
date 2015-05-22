@@ -9,6 +9,7 @@
 #define	TOUR_H
 
 #include "DistanceMatrix.h"
+
 using namespace std;
 
 class Tour {

@@ -10,12 +10,15 @@
 
 class DistanceMatrix {
 public:
+    DistanceMatrix();
     DistanceMatrix(int p);
     DistanceMatrix(const DistanceMatrix& orig);
     virtual ~DistanceMatrix();
     
-    inline void set(int i, int j, int num){matrix[getPosDMat(i,j)]=num;};
-    inline int get(int i, int j){return matrix[getPosDMat(i,j)];};
+    void set(int i, int j, int num);
+    int get(int i, int j);
+    
+    void printMatrix();
 private:
     int points;
     int* matrix;

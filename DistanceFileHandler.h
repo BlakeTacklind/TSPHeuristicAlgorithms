@@ -7,9 +7,9 @@
 
 #ifndef DISTANCEFILEHANDLER_H
 #define	DISTANCEFILEHANDLER_H
+#include "Tour.h"
 #include <list>
 #include <string>
-#include "Tour.h"
 
 using namespace std;
 

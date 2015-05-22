@@ -37,23 +37,28 @@ DistanceFileHandler::DistanceFileHandler(char* input) {
   distMatrix = DistanceMatrix(points);
   
   while (getline(file, line)){
+    cout << line <<endl;
     list<string> toks = parseString(line);
-    
+    cout << "yeah" <<endl;
     if (toks.size() != 3){
       cout << "Line got a bad number of tokens!" << endl;
       exit(-1);
     }
-    
+    cout << "ya" <<endl;
     int i = atoi(toks.front().c_str());
+    cout << i <<endl;
     toks.pop_front();
     int j = atoi(toks.front().c_str());
+    cout << j <<endl;
     toks.pop_front();
-    
+    cout << "ok" <<endl;
+    //cout << i << "," << j << "," << toks.front().c_str() << endl;
     distMatrix.set(i,j,atoi(toks.front().c_str()));
-    
+    distMatrix.printMatrix();
+    cout << "ummm" <<endl;
     //cout << "i:" << i << " j:" << j << " d:" << getPosDMat(i,j) << endl;
   }
-  
+  cout << "umm" <<endl;
   file.close();
 }
 
@@ -67,15 +72,21 @@ DistanceFileHandler::DistanceFileHandler(const DistanceFileHandler& orig) {
 list<string> DistanceFileHandler::parseString(string line) {
   
   //parses line into <space> delimited pieces
+  cout << "first" <<endl;
   int pos;
   string token;
   list<string> tokens;
   while ((pos = line.find(" ")) != -1) {
-    token = line.substr(0, pos);
+    cout << "pos " << pos << " l " << line.length() << endl;
+    token = (string)line.substr(0, pos);
+    cout << "token " << token << endl;
     if (token != "") tokens.push_back(token);
+    cout << "# "<< tokens.size() << " pos " << pos << " l " << line.length() <<endl;
     line.erase(0, pos + 1);
+    cout << "e: " << line << endl;
   }
   if (line != "") tokens.push_back(line);
+  cout << "3 " << line << endl;
   
   return tokens;
 }
