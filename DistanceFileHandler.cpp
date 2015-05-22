@@ -39,25 +39,25 @@ DistanceFileHandler::DistanceFileHandler(char* input) {
   distMatrix = DistanceMatrix(points);
   
   while (getline(file, line)){
-    cout << line <<endl;
+    //cout << line <<endl;
     list<string> toks = parseString(line);
-    cout << "yeah" <<endl;
+    //cout << "yeah" <<endl;
     if (toks.size() != 3){
       cout << "Line got a bad number of tokens!" << endl;
       exit(-1);
     }
-    cout << "ya" <<endl;
+    //cout << "ya" <<endl;
     int i = atoi(toks.front().c_str());
-    cout << i <<endl;
+    //cout << i <<endl;
     toks.pop_front();
     int j = atoi(toks.front().c_str());
-    cout << j <<endl;
+    //cout << j <<endl;
     toks.pop_front();
-    cout << "ok" <<endl;
+    //cout << "ok" <<endl;
     //cout << i << "," << j << "," << toks.front().c_str() << endl;
     distMatrix.set(i,j,atoi(toks.front().c_str()));
-    distMatrix.printMatrix();
-    cout << "ummm" <<endl;
+    //distMatrix.printMatrix();
+    //cout << "ummm" <<endl;
     //cout << "i:" << i << " j:" << j << " d:" << getPosDMat(i,j) << endl;
   }
   cout << "umm" <<endl;
@@ -74,35 +74,35 @@ DistanceFileHandler::DistanceFileHandler(const DistanceFileHandler& orig) {
 list<string> DistanceFileHandler::parseString(string line) {
   
   //parses line into <space> delimited pieces
-  cout << "first" <<endl;
+  //cout << "first" <<endl;
   int pos;
   string token;
   list<string> tokens;
   while ((pos = line.find(" ")) != -1) {
-    cout << "pos " << pos << " l " << line.length() << endl;
+    //cout << "pos " << pos << " l " << line.length() << endl;
     token = (string)line.substr(0, pos);
-    cout << "token " << token << endl;
+    //cout << "token " << token << endl;
     if (token != "") tokens.push_back(token);
-    cout << "# "<< tokens.size() << " pos " << pos << " l " << line.length() <<endl;
+    //cout << "# "<< tokens.size() << " pos " << pos << " l " << line.length() <<endl;
     line.erase(0, pos + 1);
-    cout << "e: " << line << endl;
+    //cout << "e: " << line << endl;
   }
   if (line != "") tokens.push_back(line);
-  cout << "3 " << line << endl;
+  //cout << "3 " << line << endl;
   
   return tokens;
 }
 
 DistanceFileHandler::~DistanceFileHandler() {
+    distMatrix.freeMe();
 }
 
 Tour DistanceFileHandler::NearestNeighbor() {
   int* tr = (int*) malloc(sizeof(int) * points);
   if (tr == NULL){
-    cout << "failed to malloc for nearest neighbor" << endl;
+    cout << "failed to malloc tour for nearest neighbor" << endl;
     exit(-1);
   }
-  
   
   //find initial smallest
   int si, sj, l=INT_MAX;
@@ -141,9 +141,15 @@ Tour DistanceFileHandler::NearestNeighbor() {
     length += l;
     tr[i+1] = sj;
   }
-  
+  cout <<length << "+" << distMatrix.get(tr[0], tr[points-1])<<endl;
   length += distMatrix.get(tr[0], tr[points-1]);
-  return Tour(tr, distMatrix, points,-1);
+  
+  cout << length << ":";
+  for (int i = 0; i < points; i++){
+    cout << tr[i] <<",";
+  }
+  
+  return Tour(tr, distMatrix, points,length);
 }
 
 bool DistanceFileHandler::inTour(int i, int* tr) {

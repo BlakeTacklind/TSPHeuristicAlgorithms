@@ -36,10 +36,13 @@ DistanceMatrix::DistanceMatrix(const DistanceMatrix& orig) {
 }
 
 DistanceMatrix::~DistanceMatrix() {
-  if (matrix!=NULL)
+}
+
+void DistanceMatrix::freeMe() {
+  if (matrix != NULL)
     free(matrix);
   
-  cout << "FREEDOM" << endl;
+  cout << "Freedom" << endl;
 }
 
 /*
@@ -57,7 +60,7 @@ int DistanceMatrix::getPosDMat(int i, int j) {
 }
 
 void DistanceMatrix::set(int i, int j, int num) {
-  cout << i << "," << j << ",(" << getPosDMat(i,j) << ") " << num <<endl;
+  //cout << i << "," << j << ",(" << getPosDMat(i,j) << ") " << num <<endl;
   matrix[getPosDMat(i,j)]=num;
 }
 

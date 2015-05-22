@@ -14,7 +14,6 @@ using namespace std;
 
 Tour::Tour(int* tr, DistanceMatrix dMat, int pnts, int l) {
   points = pnts;
-  length = -1;
   
   distMatrix = DistanceMatrix(points);
   tour = (int*)malloc(sizeof(int)*points);

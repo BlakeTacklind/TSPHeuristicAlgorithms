@@ -21,6 +21,7 @@ public:
     inline int getPnts(){return points;};
     
     void printMatrix();
+    void freeMe();
 private:
     int points;
     int* matrix;

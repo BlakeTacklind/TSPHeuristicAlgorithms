@@ -20,17 +20,9 @@ int main(int argc, char** argv) {
     cout << "Wrong number of arguments!" << endl;
     exit(-1);
   }
-  /*
-  DistanceMatrix m = DistanceMatrix(14);
- 
-  for(int i=1;i<m.getPnts();i++){
-    for(int j = i+1; j<=m.getPnts();j++){
-      m.set(i,j,1);
-    }
-  }
-  m.printMatrix();
-  */
+  
   DistanceFileHandler d = DistanceFileHandler(argv[1]);
+  cout << "try me2" <<endl;
   Tour t = d.NearestNeighbor();
   cout << t.getlength() << endl;
   t.printTour();

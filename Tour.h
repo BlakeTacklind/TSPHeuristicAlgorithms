@@ -14,7 +14,7 @@ using namespace std;
 
 class Tour {
 public:
-    Tour(int* tr, DistanceMatrix dMat, int pnts, int length);
+    Tour(int* tr, DistanceMatrix dMat, int pnts, int l);
     Tour(const Tour& orig);
     virtual ~Tour();
     
