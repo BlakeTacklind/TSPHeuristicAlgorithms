@@ -56,7 +56,7 @@ int DistanceMatrix::getPosDMat(int i, int j) {
 }
 
 void DistanceMatrix::set(int i, int j, int num) {
-  cout << i << "," << j << "," << num <<endl;
+  cout << i << "," << j << ",(" << getPosDMat(i,j) << ") " << num <<endl;
   matrix[getPosDMat(i,j)]=num;
 }
 
