@@ -10,7 +10,7 @@
 #include <cstdlib>
 using namespace std;
 
-DistanceMatrix::DistanceMatrix() {}
+//DistanceMatrix::DistanceMatrix() {}
 
 DistanceMatrix::DistanceMatrix(int p) {
   points = p;
@@ -29,20 +29,22 @@ DistanceMatrix::DistanceMatrix(int p) {
 DistanceMatrix::DistanceMatrix(const DistanceMatrix& orig) {
   points = orig.points;
   size = orig.size;
-  
+
+  matrix = (int*)malloc(sizeof(int)*size);
+
   for (int i =0; i < size; i++){
     matrix[i] = orig.matrix[i];
   }
 }
 
 DistanceMatrix::~DistanceMatrix() {
-}
-
-void DistanceMatrix::freeMe() {
   if (matrix != NULL)
     free(matrix);
   
   cout << "Freedom" << endl;
+}
+
+void DistanceMatrix::freeMe() {
 }
 
 /*

@@ -27,9 +27,10 @@ private:
     double getInnerDistance(int a, int b, int d);
     list<string> parseString(string line);
     bool inTour(int i, int* tr);
-    bool inTour(int i, list<int> tr);
-    
-    DistanceMatrix distMatrix;
+    bool inTour(int i, list<int> &tr);
+    void printList(list<int> l);
+
+    DistanceMatrix* distMatrix;
     int points;
 };
 

@@ -21,11 +21,16 @@ int main(int argc, char** argv) {
     exit(-1);
   }
   
-  DistanceFileHandler d = DistanceFileHandler(argv[1]);
-  Tour t = d.NearestNeighbor();
+  DistanceFileHandler* d = new DistanceFileHandler(argv[1]);
+  Tour t = d->NearestNeighbor();
   cout << t.getlength() << endl;
   t.printTour();
-  
+  Tour f = d->FarthestInsertion();
+  cout<<"testme"<<endl;
+  cout << f.getlength() <<endl;
+  f.printTour();
+  delete d;
+ 
   return 0;
 }
 

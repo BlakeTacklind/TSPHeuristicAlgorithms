@@ -24,7 +24,7 @@ private:
     void updateLength();
     
     int points;
-    DistanceMatrix distMatrix;
+    DistanceMatrix* distMatrix;
     int* tour;
     int length;
 };

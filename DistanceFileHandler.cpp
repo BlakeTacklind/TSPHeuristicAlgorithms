@@ -34,9 +34,9 @@ DistanceFileHandler::DistanceFileHandler(char* input) {
     cout << "failed to get a viable number of cities" << endl;
     exit(-1);
   }
-  
+
   //get a array matrix upper triangle
-  distMatrix = DistanceMatrix(points);
+  distMatrix = new DistanceMatrix(points);
   
   while (getline(file, line)){
     //cout << line <<endl;
@@ -55,7 +55,7 @@ DistanceFileHandler::DistanceFileHandler(char* input) {
     toks.pop_front();
     //cout << "ok" <<endl;
     //cout << i << "," << j << "," << toks.front().c_str() << endl;
-    distMatrix.set(i,j,atoi(toks.front().c_str()));
+    distMatrix->set(i,j,atoi(toks.front().c_str()));
     //distMatrix.printMatrix();
     //cout << "ummm" <<endl;
     //cout << "i:" << i << " j:" << j << " d:" << getPosDMat(i,j) << endl;
@@ -94,7 +94,7 @@ list<string> DistanceFileHandler::parseString(string line) {
 }
 
 DistanceFileHandler::~DistanceFileHandler() {
-    distMatrix.freeMe();
+  delete distMatrix;
 }
 
 Tour DistanceFileHandler::NearestNeighbor() {
@@ -105,7 +105,7 @@ Tour DistanceFileHandler::NearestNeighbor() {
   for (int i=1; i < points; i++){
     for (int j=i+1; j <=points; j++){
       int t;
-      if((t=distMatrix.get(i,j)) < l){
+      if((t=distMatrix->get(i,j)) < l){
         l=t;
         si=i;
         sj=j;
@@ -128,7 +128,7 @@ Tour DistanceFileHandler::NearestNeighbor() {
     
     for(int j = 1; j <= points; j++){
       int t;
-      if(si!=j && !inTour(j, tr) && l>(t=distMatrix.get(si, j))){
+      if(si!=j && !inTour(j, tr) && l>(t=distMatrix->get(si, j))){
         l=t;
         sj=j;
       }
@@ -138,8 +138,8 @@ Tour DistanceFileHandler::NearestNeighbor() {
     tr[i+1] = sj;
   }
   
-  length+=distMatrix.get(tr[0],tr[points-1]);
-  return Tour(tr, &distMatrix, points,length);
+  length+=distMatrix->get(tr[0],tr[points-1]);
+  return Tour(tr, distMatrix, points,length);
 }
 
 bool DistanceFileHandler::inTour(int i, int* tr) {
@@ -158,7 +158,7 @@ Tour DistanceFileHandler::FarthestInsertion() {
   for(int i =1;i<points;i++)
     for(int j=i+1;j<=points;j++){
       int t;
-      if (l<(t=distMatrix.get(i,j))){
+      if (l<(t=distMatrix->get(i,j))){
         si=i;
         sj=j;
         l=t;
@@ -168,35 +168,62 @@ Tour DistanceFileHandler::FarthestInsertion() {
   list<int> tr;
   
   tr.push_front(si);
-  tr.push_front(sj);
+  tr.push_back(sj);
   
-  
+
+  printList(tr);
+  cout<<"tst"<<endl; 
   for(int j=1;j<points;j++){
     double s=0;
-    int sk,sc=0;
-    for(int i=1;i<points;i++){
+    int sc=0;
+    list<int>::iterator sk;
+    for(int i=1;i<=points;i++){
+      //cout<<"run "<<j<<" pnt "<<i<<endl;
       if(!inTour(i,tr)){
-        for(int k = 1;k<points && tr[k]!= 0;k++){
-          double t = getInnerDistancePntwise(tr[k],tr[k-1],i);
+        list<int>::iterator it=tr.begin();
+	//cout<<tr.front()<<" "<<tr.back()<<" "<<i<<endl;
+	s=getInnerDistancePntwise(tr.front(),tr.back(),i);
+	int last=sc=*it;
+	++it;
+	//printList(tr);
+        while(it!=tr.end()){
+          int a=*it;
+          double t = getInnerDistancePntwise(a,last,i);
+  	  cout<<"("<<a<<","<<last<<","<<i<<") "<<t<<endl;
           if (t>s){
             sc=i;
-            sk=k;
+            sk=it;
+	    
           }
+	  last=*it;
+	  ++it;
         }
       }
     }
     
+	cout<<"out"<<endl;
+    cout<<"insert "<<sc<<" before "<<*sk<<endl;
+    tr.insert(sk,sc);
+	cout<<"test1"<<endl;
+    printList(tr);
     //INSERT ELEMENT INTO TOUR
   }
-  
+  cout<<"test"<<endl;
   //RETURN TOUR
 }
 
-bool DistanceFileHandler::inTour(int i, list<int> tr){
-  for(iterator it=tr.begin();it!=tr.end();++it)
+bool DistanceFileHandler::inTour(int i, list<int> &tr){
+  for(list<int>::iterator it=tr.begin();it!=tr.end();++it)
     if(i==*it) return true;
   
   return false;
+}
+
+void DistanceFileHandler::printList(list<int> l){
+  for(list<int>::iterator it=l.begin(); it!=l.end();++it){
+    cout<<*it<<",";
+  }
+  cout << endl;
 }
 
 /*
@@ -206,11 +233,12 @@ bool DistanceFileHandler::inTour(int i, list<int> tr){
  * Use Heron's Formula to get area of triangle and derive distance to line
  * with that area formula.
  */
-double getInnerDistance(int a, int b, int d){
+double DistanceFileHandler::getInnerDistance(int a, int b, int d){
   double p = (a + b + d) / 2.0;
   return 2 * sqrt(p*(p-a)*(p-b)*(p-d)) / d;
 }
 
 double DistanceFileHandler::getInnerDistancePntwise(int i, int j, int c) {
-  return getInnerDistance(distMatrix.get(i,c),distMatrix.get(j,c),distMatrix.get(i,j));
+  return getInnerDistance(distMatrix->get(i,c),distMatrix->get(j,c),distMatrix->get(i,j));
 }
+

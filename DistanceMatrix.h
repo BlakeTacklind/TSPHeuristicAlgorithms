@@ -10,7 +10,7 @@
 
 class DistanceMatrix {
 public:
-    DistanceMatrix();
+    //DistanceMatrix();
     DistanceMatrix(int p);
     DistanceMatrix(const DistanceMatrix& orig);
     virtual ~DistanceMatrix();

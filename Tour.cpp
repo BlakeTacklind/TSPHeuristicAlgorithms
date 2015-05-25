@@ -15,14 +15,13 @@ using namespace std;
 Tour::Tour(int* tr, DistanceMatrix* dMat, int pnts, int l) {
   points = pnts;
   
-  distMatrix = DistanceMatrix(points);
   tour = (int*)malloc(sizeof(int)*points);
   
   if(tour == NULL){
     cout << "tour failed to malloc!" << endl;
   }
-  
-  distMatrix = DistanceMatrix(*dMat);
+ 
+  distMatrix = new DistanceMatrix(*dMat);
   
   for (int i = 0; i < pnts; i++)
     tour[i] = tr[i];
@@ -39,13 +38,15 @@ Tour::Tour(const Tour& orig) {
 Tour::~Tour() {  
   if (tour != NULL)
     free(tour);
+
+  cout<<"T FREEDOM"<<endl;
 }
 
 void Tour::updateLength() {
-  length = distMatrix.get(tour[0], tour[points-1]);
+  length = distMatrix->get(tour[0], tour[points-1]);
   
   for (int i = 1; i < points; i++){
-    length += distMatrix.get(tour[i-1],tour[i]);
+    length += distMatrix->get(tour[i-1],tour[i]);
   }
 }
 
