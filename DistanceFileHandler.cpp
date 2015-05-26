@@ -83,6 +83,15 @@ DistanceFileHandler::~DistanceFileHandler() {
   delete distMatrix;
 }
 
+//create a simple tour: 1-2-...-n-1
+Tour DistanceFileHandler::SimpleTour() {
+  int tr[points];
+  for(int i=0;i<points;i++)
+    tr[i]=i+1;
+  
+  return Tour(tr,distMatrix,points,0);
+}
+
 Tour DistanceFileHandler::NearestNeighbor() {
   int tr[points] ;
   
@@ -175,16 +184,19 @@ Tour DistanceFileHandler::FarthestInsertion() {
     int sc=0;
     list<int>::iterator sk;
     
+    /*
+     * For all points, check if it is in the tour
+     * If not find the nearest edge.
+     * Of all the points add the point furthest from its closest edge
+     */
     for(int i=1;i<=points;i++){
-      //cout<<"run "<<j<<" pnt "<<i<<endl;
       double st=0;
       list<int>::iterator skt;
       if(!inTour(i,tr)){
         list<int>::iterator it=tr.begin();
-	//cout<<tr.front()<<" "<<tr.back()<<" "<<i<<endl;
+        
         skt=it;
         st=getInnerDistancePntwise(tr.front(),tr.back(),i);
-        //cout<<"("<<tr.front()<<","<<tr.back()<<","<<i<<") "<<st<<endl;
         
 	int last=*it;
 	++it;
@@ -211,20 +223,20 @@ Tour DistanceFileHandler::FarthestInsertion() {
       
     }
     
-    //cout<<"insert "<<sc<<" before "<<*sk<<endl;
     tr.insert(sk,sc);
-    //printList(tr);
   }
-  //cout<<"test"<<endl;
   
+  //convert tour list into array
   int tour[points];
   int i=0;
   for (list<int>::iterator it = tr.begin() ; it!=tr.end(); ++it, i++)
     tour[i]=*it;
   
+  //Create the tour (make the tour calculate its length)
   return Tour(tour, distMatrix, points, 0);
 }
 
+//Check if element i is in list tr
 bool DistanceFileHandler::inTour(int i, list<int> &tr){
   for(list<int>::iterator it=tr.begin();it!=tr.end();++it)
     if(i==*it) return true;
@@ -232,6 +244,7 @@ bool DistanceFileHandler::inTour(int i, list<int> &tr){
   return false;
 }
 
+//print the list (for debug)
 void DistanceFileHandler::printList(list<int> l){
   for(list<int>::iterator it=l.begin(); it!=l.end();++it){
     cout<<*it<<",";
@@ -253,12 +266,4 @@ double DistanceFileHandler::getInnerDistance(int a, int b, int d){
 
 double DistanceFileHandler::getInnerDistancePntwise(int i, int j, int c) {
   return getInnerDistance(distMatrix->get(i,c),distMatrix->get(j,c),distMatrix->get(i,j));
-}
-
-Tour DistanceFileHandler::SimpleTour() {
-  int tr[points];
-  for(int i=0;i<points;i++)
-    tr[i]=i+1;
-  
-  return Tour(tr,distMatrix,points,0);
 }

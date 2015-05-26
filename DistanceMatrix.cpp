@@ -10,10 +10,10 @@
 #include <cstdlib>
 using namespace std;
 
-//DistanceMatrix::DistanceMatrix() {}
-
 DistanceMatrix::DistanceMatrix(int p) {
   points = p;
+  
+  //# elements in triangle array
   size = (points*points-points)/2;
   
   matrix = (int*)malloc(sizeof(int)*size);
@@ -44,9 +44,6 @@ DistanceMatrix::~DistanceMatrix() {
   cout << "Freedom" << endl;
 }
 
-void DistanceMatrix::freeMe() {
-}
-
 /*
  * Gets the placement of the distance of a element in the triangle matrix 
  * compacts the matrix into a linear output. (smaller number always first)
@@ -62,7 +59,6 @@ int DistanceMatrix::getPosDMat(int i, int j) {
 }
 
 void DistanceMatrix::set(int i, int j, int num) {
-  //cout << i << "," << j << ",(" << getPosDMat(i,j) << ") " << num <<endl;
   matrix[getPosDMat(i,j)]=num;
 }
 
