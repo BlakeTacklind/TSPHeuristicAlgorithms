@@ -56,7 +56,7 @@ Tour::~Tour() {
   if (tour != NULL)
     free(tour);
 
-  //cout<<"T FREEDOM"<<endl;
+  delete distMatrix;
 }
 
 void Tour::updateLength() {

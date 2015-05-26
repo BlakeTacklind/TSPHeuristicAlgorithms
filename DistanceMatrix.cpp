@@ -22,8 +22,6 @@ DistanceMatrix::DistanceMatrix(int p) {
     cout << "failed to malloc matrix" <<endl;
     exit(-1);
   }
-  
-  //cout << points << " " << size << endl;
 }
 
 DistanceMatrix::DistanceMatrix(const DistanceMatrix& orig) {
@@ -40,8 +38,6 @@ DistanceMatrix::DistanceMatrix(const DistanceMatrix& orig) {
 DistanceMatrix::~DistanceMatrix() {
   if (matrix != NULL)
     free(matrix);
-  
-  cout << "Freedom" << endl;
 }
 
 /*
