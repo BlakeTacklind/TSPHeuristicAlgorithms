@@ -8,13 +8,37 @@
 #include <cstdlib>
 #include <iostream>
 #include <dirent.h>
+#include <sys/timeb.h>
+
 #include "DistanceFileHandler.h"
 
 using namespace std;
 
-/*
- * 
- */
+int clk;
+int getMilliCount(){
+	timeb tb;
+	ftime(&tb);
+	int nCount = tb.millitm + (tb.time & 0xfffff) * 1000;
+	return nCount;
+}
+
+int getMilliSpan(int nTimeStart){
+	int nSpan = getMilliCount() - nTimeStart;
+	if(nSpan < 0)
+		nSpan += 0x100000 * 1000;
+	return nSpan;
+}
+
+void start(){
+  clk=getMilliCount();
+}
+
+void split(){
+  cout<<","<<getMilliSpan(clk);
+  clk=getMilliCount();
+  
+}
+
 int main(int argc, char** argv) {
   //check if argument was given
   if (argc != 2){
@@ -34,15 +58,23 @@ int main(int argc, char** argv) {
         //perform analysis and print on each data file
         cout<<ent->d_name;
         DistanceFileHandler* d = new DistanceFileHandler(s.c_str());
+        start();
         cout<<","<<d->SimpleTour().getlength();
+        split();
         Tour NN = d->NearestNeighbor();
         cout<<","<<NN.getlength();
+        split();
         cout<<","<<Tour::Opt2(NN).getlength();
+        split();
         cout<<","<<Tour::LinKernighan(NN).getlength();
+        split();
         Tour FI = d->FarthestInsertion();
         cout<<","<<FI.getlength();
+        split();
         cout<<","<<Tour::Opt2(FI).getlength();
+        split();
         cout<<","<<Tour::LinKernighan(FI).getlength();
+        split();
         cout<<endl;
       }
     }
