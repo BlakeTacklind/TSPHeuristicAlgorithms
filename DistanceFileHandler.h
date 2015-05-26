@@ -3,6 +3,9 @@
  * Author: btacklind
  *
  * Created on May 21, 2015, 7:42 PM
+ * 
+ * Reads a distance file and creates a Object that contains data from that
+ * file
  */
 
 #ifndef DISTANCEFILEHANDLER_H

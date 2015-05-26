@@ -3,6 +3,8 @@
  * Author: btacklind
  *
  * Created on May 21, 2015, 11:11 PM
+ * 
+ * Has a tour as well as all distances between points
  */
 
 #ifndef TOUR_H

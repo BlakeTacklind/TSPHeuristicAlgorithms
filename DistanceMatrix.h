@@ -3,6 +3,8 @@
  * Author: btacklind
  *
  * Created on May 22, 2015, 1:00 AM
+ * 
+ * Handles the distance matrix used in defining a symmetric graph
  */
 
 #ifndef DISTANCEMATRIX_H

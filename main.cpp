@@ -3,6 +3,8 @@
  * Author: btacklind
  *
  * Created on May 21, 2015, 7:24 PM
+ * 
+ * Give this program a directory to read Distance files from
  */
 
 #include <cstdlib>
