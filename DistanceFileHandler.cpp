@@ -171,40 +171,44 @@ Tour DistanceFileHandler::FarthestInsertion() {
   tr.push_back(sj);
   
   for(int j=2;j<points;j++){
-    double s=0;
+    double s=-1;
     int sc=0;
     list<int>::iterator sk;
     
     for(int i=1;i<=points;i++){
       //cout<<"run "<<j<<" pnt "<<i<<endl;
+      double st=0;
+      list<int>::iterator skt;
       if(!inTour(i,tr)){
         list<int>::iterator it=tr.begin();
 	//cout<<tr.front()<<" "<<tr.back()<<" "<<i<<endl;
-        double t=getInnerDistancePntwise(tr.front(),tr.back(),i);
-	if(s<t){
-          sk=it;
-          sc=i;
-          s=t;
-          //cout<<"new high ";
-        }
-        //cout<<"("<<tr.front()<<","<<tr.back()<<","<<i<<") "<<t<<endl;
+        skt=it;
+        st=getInnerDistancePntwise(tr.front(),tr.back(),i);
+        //cout<<"("<<tr.front()<<","<<tr.back()<<","<<i<<") "<<st<<endl;
         
 	int last=*it;
 	++it;
 	//printList(tr);
         while(it!=tr.end()){
           double t = getInnerDistancePntwise(*it,last,i);
-          if (t>s){
-            sc=i;
-            sk=it;
-            s=t;
+          if (t<st){
+            skt=it;
+            st=t;
 	    //cout<<"new high ";
           }
   	  //cout<<"("<<last<<","<<*it<<","<<i<<") "<<t<<endl;
 	  last=*it;
 	  ++it;
         }
+        
+        if(st>s){
+          s=st;
+          sk=skt;
+          sc=i;
+        }
       }
+      
+      
     }
     
     //cout<<"insert "<<sc<<" before "<<*sk<<endl;

@@ -24,9 +24,9 @@ int main(int argc, char** argv) {
   DIR *dir;
   struct dirent *ent;
   if ((dir = opendir (argv[1])) != NULL) {
-    /* print all the files and directories within directory */
+    
     while ((ent = readdir (dir)) != NULL) {
-      //printf ("%s\n", ent->d_name);
+      
       string s=string(argv[1])+ent->d_name;
       if(s.find(".txt")!=-1){
         cout<<ent->d_name;
@@ -45,29 +45,10 @@ int main(int argc, char** argv) {
     }
     closedir (dir);
   } else {
-    /* could not open directory */
-    perror ("");
+    perror ("Could not open directory");
     return EXIT_FAILURE;
   }
   
-/*
-  DistanceFileHandler* d = new DistanceFileHandler(argv[1]);
-  Tour t = d->NearestNeighbor();
-  cout << t.getlength() << endl;
-  t.printTour();
-  t.LinKern();
-  cout << t.getlength() << endl;
-  t.printTour();
-  Tour f = d->FarthestInsertion();
-  //cout<<"testme"<<endl;
-  cout << f.getlength() <<endl;
-  f.printTour();
-  f.opt2();
-  cout << f.getlength() << endl;
-  f.printTour();
-  
-  delete d;
- */
   return 0;
 }
 
