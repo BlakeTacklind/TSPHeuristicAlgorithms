@@ -13,7 +13,10 @@
 using namespace std;
 
 class Tour {
-public:
+public:    
+    static Tour Opt2(Tour t);
+    static Tour LinKernighan(Tour t);
+    
     Tour(int* tr, DistanceMatrix* dMat, int pnts, int l);
     Tour(const Tour& orig);
     virtual ~Tour();
@@ -21,8 +24,8 @@ public:
     inline int getlength(){return length;};
     void printTour();
     bool opt2();
-    void opt3swap(int a, int b, int c);
     void LinKern();
+    void opt3swap(int a, int b, int c);
     
 private:
     bool opt3();

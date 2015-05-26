@@ -15,12 +15,13 @@ using namespace std;
 
 class DistanceFileHandler {
 public:
-    DistanceFileHandler(char* input);
+    DistanceFileHandler(const char* input);
     DistanceFileHandler(const DistanceFileHandler& orig);
     virtual ~DistanceFileHandler();
     
     Tour NearestNeighbor();
     Tour FarthestInsertion();
+    Tour SimpleTour();
 private:
     
     double getInnerDistancePntwise(int i, int j, int c);

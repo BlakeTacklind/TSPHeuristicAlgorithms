@@ -13,8 +13,8 @@
 #include <climits>
 using namespace std;
 
-DistanceFileHandler::DistanceFileHandler(char* input) {
-  cout << "reading from \"" << input << "\"" << endl;
+DistanceFileHandler::DistanceFileHandler(const char* input) {
+  //cout << "reading from \"" << input << "\"" << endl;
   
   ifstream file(input);
   
@@ -251,3 +251,10 @@ double DistanceFileHandler::getInnerDistancePntwise(int i, int j, int c) {
   return getInnerDistance(distMatrix->get(i,c),distMatrix->get(j,c),distMatrix->get(i,j));
 }
 
+Tour DistanceFileHandler::SimpleTour() {
+  int tr[points];
+  for(int i=0;i<points;i++)
+    tr[i]=i+1;
+  
+  return Tour(tr,distMatrix,points,0);
+}

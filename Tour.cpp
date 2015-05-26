@@ -19,6 +19,7 @@ Tour::Tour(int* tr, DistanceMatrix* dMat, int pnts, int l) {
   
   if(tour == NULL){
     cout << "tour failed to malloc!" << endl;
+    exit(-1);
   }
  
   distMatrix = new DistanceMatrix(*dMat);
@@ -33,13 +34,29 @@ Tour::Tour(int* tr, DistanceMatrix* dMat, int pnts, int l) {
 }
 
 Tour::Tour(const Tour& orig) {
+  points=orig.points;
+  
+  tour = (int*) malloc(sizeof(int)*points);
+  
+  if(tour == NULL){
+    cout << "tour failed to malloc!" << endl;
+    exit(-1);
+  }
+ 
+  for(int i=0;i<points;i++)
+    tour[i]=orig.tour[i];
+  
+  
+  distMatrix = new DistanceMatrix(*(orig.distMatrix));
+  
+  updateLength();
 }
 
 Tour::~Tour() {  
   if (tour != NULL)
     free(tour);
 
-  cout<<"T FREEDOM"<<endl;
+  //cout<<"T FREEDOM"<<endl;
 }
 
 void Tour::updateLength() {
@@ -184,4 +201,16 @@ void Tour::LinKern() {
     madeSwap=false;
     if(opt2()||opt3()) madeSwap=true;
   }while(madeSwap);
+}
+
+Tour Tour::LinKernighan(Tour t) {
+  Tour out = Tour(t);
+  out.opt2();
+  return out;
+}
+
+Tour Tour::Opt2(Tour t) {
+  Tour out = Tour(t);
+  out.opt2();
+  return out;
 }

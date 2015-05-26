@@ -7,7 +7,7 @@
 
 #include <cstdlib>
 #include <iostream>
-
+#include <dirent.h>
 #include "DistanceFileHandler.h"
 
 using namespace std;
@@ -21,6 +21,36 @@ int main(int argc, char** argv) {
     exit(-1);
   }
   
+  DIR *dir;
+  struct dirent *ent;
+  if ((dir = opendir (argv[1])) != NULL) {
+    /* print all the files and directories within directory */
+    while ((ent = readdir (dir)) != NULL) {
+      //printf ("%s\n", ent->d_name);
+      string s=string(argv[1])+ent->d_name;
+      if(s.find(".txt")!=-1){
+        cout<<ent->d_name;
+        DistanceFileHandler* d = new DistanceFileHandler(s.c_str());
+          cout<<","<<d->SimpleTour().getlength();
+          Tour NN = d->NearestNeighbor();
+          cout<<","<<NN.getlength();
+          cout<<","<<Tour::Opt2(NN).getlength();
+          cout<<","<<Tour::LinKernighan(NN).getlength();
+          Tour FI = d->FarthestInsertion();
+          cout<<","<<FI.getlength();
+          cout<<","<<Tour::Opt2(FI).getlength();
+          cout<<","<<Tour::LinKernighan(FI).getlength();
+          cout<<endl;
+      }
+    }
+    closedir (dir);
+  } else {
+    /* could not open directory */
+    perror ("");
+    return EXIT_FAILURE;
+  }
+  
+/*
   DistanceFileHandler* d = new DistanceFileHandler(argv[1]);
   Tour t = d->NearestNeighbor();
   cout << t.getlength() << endl;
@@ -37,7 +67,7 @@ int main(int argc, char** argv) {
   f.printTour();
   
   delete d;
- 
+ */
   return 0;
 }
 
