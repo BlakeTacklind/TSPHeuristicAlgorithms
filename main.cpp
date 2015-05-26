@@ -16,11 +16,13 @@ using namespace std;
  * 
  */
 int main(int argc, char** argv) {
+  //check if argument was given
   if (argc != 2){
     cout << "Wrong number of arguments!" << endl;
     exit(-1);
   }
   
+  //open the directory cointaining data filkes
   DIR *dir;
   struct dirent *ent;
   if ((dir = opendir (argv[1])) != NULL) {
@@ -29,18 +31,19 @@ int main(int argc, char** argv) {
       
       string s=string(argv[1])+ent->d_name;
       if(s.find(".txt")!=-1){
+        //perform analysis and print on each data file
         cout<<ent->d_name;
         DistanceFileHandler* d = new DistanceFileHandler(s.c_str());
-          cout<<","<<d->SimpleTour().getlength();
-          Tour NN = d->NearestNeighbor();
-          cout<<","<<NN.getlength();
-          cout<<","<<Tour::Opt2(NN).getlength();
-          cout<<","<<Tour::LinKernighan(NN).getlength();
-          Tour FI = d->FarthestInsertion();
-          cout<<","<<FI.getlength();
-          cout<<","<<Tour::Opt2(FI).getlength();
-          cout<<","<<Tour::LinKernighan(FI).getlength();
-          cout<<endl;
+        cout<<","<<d->SimpleTour().getlength();
+        Tour NN = d->NearestNeighbor();
+        cout<<","<<NN.getlength();
+        cout<<","<<Tour::Opt2(NN).getlength();
+        cout<<","<<Tour::LinKernighan(NN).getlength();
+        Tour FI = d->FarthestInsertion();
+        cout<<","<<FI.getlength();
+        cout<<","<<Tour::Opt2(FI).getlength();
+        cout<<","<<Tour::LinKernighan(FI).getlength();
+        cout<<endl;
       }
     }
     closedir (dir);

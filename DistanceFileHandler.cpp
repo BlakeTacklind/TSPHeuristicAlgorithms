@@ -14,7 +14,6 @@
 using namespace std;
 
 DistanceFileHandler::DistanceFileHandler(const char* input) {
-  //cout << "reading from \"" << input << "\"" << endl;
   
   ifstream file(input);
   
@@ -24,11 +23,10 @@ DistanceFileHandler::DistanceFileHandler(const char* input) {
     exit(-1);
   }
   
+  //get the number of cities (first line is a number)
   string line;
   getline(file, line);
-  
   points = atoi(line.c_str());
-  
   if (points < 3)
   {
     cout << "failed to get a viable number of cities" << endl;
@@ -39,28 +37,22 @@ DistanceFileHandler::DistanceFileHandler(const char* input) {
   distMatrix = new DistanceMatrix(points);
   
   while (getline(file, line)){
-    //cout << line <<endl;
+    //parse the current line
     list<string> toks = parseString(line);
-    //cout << "yeah" <<endl;
     if (toks.size() != 3){
       cout << "Line got a bad number of tokens!" << endl;
       exit(-1);
     }
-    //cout << "ya" <<endl;
+   
+    //convert conveet string tokens into ints
     int i = atoi(toks.front().c_str());
-    //cout << i <<endl;
     toks.pop_front();
     int j = atoi(toks.front().c_str());
-    //cout << j <<endl;
     toks.pop_front();
-    //cout << "ok" <<endl;
-    //cout << i << "," << j << "," << toks.front().c_str() << endl;
+
+    //add lines data to data matrix
     distMatrix->set(i,j,atoi(toks.front().c_str()));
-    //distMatrix.printMatrix();
-    //cout << "ummm" <<endl;
-    //cout << "i:" << i << " j:" << j << " d:" << getPosDMat(i,j) << endl;
   }
-  //cout << "umm" <<endl;
   file.close();
 }
 
@@ -74,21 +66,15 @@ DistanceFileHandler::DistanceFileHandler(const DistanceFileHandler& orig) {
 list<string> DistanceFileHandler::parseString(string line) {
   
   //parses line into <space> delimited pieces
-  //cout << "first" <<endl;
   int pos;
   string token;
   list<string> tokens;
   while ((pos = line.find(" ")) != -1) {
-    //cout << "pos " << pos << " l " << line.length() << endl;
     token = (string)line.substr(0, pos);
-    //cout << "token " << token << endl;
     if (token != "") tokens.push_back(token);
-    //cout << "# "<< tokens.size() << " pos " << pos << " l " << line.length() <<endl;
     line.erase(0, pos + 1);
-    //cout << "e: " << line << endl;
   }
   if (line != "") tokens.push_back(line);
-  //cout << "3 " << line << endl;
   
   return tokens;
 }
@@ -121,11 +107,13 @@ Tour DistanceFileHandler::NearestNeighbor() {
   for (int i = 2; i < points; i++)
     tr[i] = 0;
   
+  //greedily complete the tour
   for(int i = 1; i < points-1; i++){
     si=tr[i];
     sj=0;
     l=INT_MAX;
     
+    //find next smallest element
     for(int j = 1; j <= points; j++){
       int t;
       if(si!=j && !inTour(j, tr) && l>(t=distMatrix->get(si, j))){
@@ -134,14 +122,21 @@ Tour DistanceFileHandler::NearestNeighbor() {
       }
     }
     
+    //add element to tour
     length += l;
     tr[i+1] = sj;
   }
   
+  //add length of edge last to front
   length+=distMatrix->get(tr[0],tr[points-1]);
+
+  //create tour
   return Tour(tr, distMatrix, points,length);
 }
 
+/*
+ * check if element i is in array tr
+ */
 bool DistanceFileHandler::inTour(int i, int* tr) {
   for(int j=0;j<points;j++){
     if (i==tr[j])
@@ -152,7 +147,11 @@ bool DistanceFileHandler::inTour(int i, int* tr) {
   return false;
 }
 
+/*
+ * creaste tour using farthest intersection algorithm
+ */
 Tour DistanceFileHandler::FarthestInsertion() {
+  //find points furthest apart
   int l=0;
   int si,sj=0;
   for(int i =1;i<points;i++)
@@ -170,6 +169,7 @@ Tour DistanceFileHandler::FarthestInsertion() {
   tr.push_front(si);
   tr.push_back(sj);
   
+  //add n-2 more points to tour
   for(int j=2;j<points;j++){
     double s=-1;
     int sc=0;
