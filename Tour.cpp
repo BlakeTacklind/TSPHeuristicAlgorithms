@@ -199,7 +199,7 @@ void Tour::LinKern() {
   
   do{
     madeSwap=false;
-    if(opt2()||opt3()) madeSwap=true;
+    if(opt3()||opt2()) madeSwap=true;
   }while(madeSwap);
 }
 
