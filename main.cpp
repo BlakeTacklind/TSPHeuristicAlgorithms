@@ -25,10 +25,17 @@ int main(int argc, char** argv) {
   Tour t = d->NearestNeighbor();
   cout << t.getlength() << endl;
   t.printTour();
+  t.LinKern();
+  cout << t.getlength() << endl;
+  t.printTour();
   Tour f = d->FarthestInsertion();
   //cout<<"testme"<<endl;
   cout << f.getlength() <<endl;
   f.printTour();
+  f.opt2();
+  cout << f.getlength() << endl;
+  f.printTour();
+  
   delete d;
  
   return 0;

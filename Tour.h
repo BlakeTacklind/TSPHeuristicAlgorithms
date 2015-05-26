@@ -20,8 +20,17 @@ public:
     
     inline int getlength(){return length;};
     void printTour();
+    bool opt2();
+    void opt3swap(int a, int b, int c);
+    void LinKern();
+    
 private:
+    bool opt3();
     void updateLength();
+    inline int d(int i, int j){return distMatrix->get(tour[i],tour[j]);};
+    void opt2swap(int i, int j);
+    bool opt2check(int i, int j);
+    bool opt3check(int a, int b, int c);
     
     int points;
     DistanceMatrix* distMatrix;

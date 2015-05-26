@@ -57,3 +57,131 @@ void Tour::printTour() {
   cout << endl;
 }
 
+void Tour::opt2swap(int i, int j) {
+  int k;
+  if (j<i){
+    k=j;
+    j=i;
+    i=k;
+  }
+  
+  k=j-i;
+  int sub[k];
+  for(int a=i+1,b=0;a<=j;a++)
+    sub[b++]=tour[a];
+  
+  for(int a=i+1,b=k;b!=0;a++)
+    tour[a]=sub[--b];
+}
+
+bool Tour::opt2check(int i, int j) {
+  return (d(i,i+1)+d(j,j+1) > d(i,j)+d(i+1,j+1));
+}
+
+bool Tour::opt2() {
+  bool madeSwap;
+  bool swap = false;
+  do{
+    madeSwap=false;
+    
+    for(int i=0;i<points-2;i++){
+      
+      if(d(i,i+1)+d(0,points-1) > d(i,points-1)+d(0,i+1)){
+        swap=madeSwap=true;
+        opt2swap(i,points-1);
+      }
+      
+      for(int j=i+2;j<points-1;j++){
+        //cout<<"check "<<i<<","<<j<<endl;
+        if(opt2check(i,j)){
+          swap=madeSwap=true;
+          opt2swap(i,j);
+          //cout<<"Swap "<<i<<","<<j<<endl;
+        }
+      }
+    }
+    
+  }while(madeSwap);
+  
+  updateLength();
+  
+  return swap;
+}
+
+bool Tour::opt3check(int a, int b, int c) {
+  return d(a,a+1)+d(b,b+1)+d(c,c+1)>d(a,b+1)+d(b,c+1)+d(c,a+1);
+}
+
+void Tour::opt3swap(int a, int b, int c) {
+  if(c<b){
+    int k=c;
+    c=b;
+    b=k;
+  }
+  if(b<a){
+    int k=a;
+    a=b;
+    b=k;
+  }
+  if(c<b){
+    int k=c;
+    c=b;
+    b=k;
+  }
+  int k1=b-a,k2=c-b;
+  int sub1[k1],sub2[k2];
+  
+  int i=a+1;
+  for(int j=0;i<=b;i++,j++)
+    sub1[j]=tour[i];
+  
+  for(int j=0;i<=c;i++,j++)
+    sub2[j]=tour[i];
+  
+  i=a+1;
+  for(int j=0;j<k2;j++,i++)
+    tour[i]=sub2[j];
+  
+  for(int j=0;j<k1;j++,i++)
+    tour[i]=sub1[j];
+}
+
+bool Tour::opt3() {
+  bool madeSwap;
+  bool swap;
+  
+  do{
+    madeSwap=false;
+    
+    for(int i=0;i<points-5;i++){
+      for(int j=i+2;j<points-3;j++){
+        if(d(i,i+1)+d(j,j+1)+d(0,points-1)>d(i,j+1)+d(0,j)+d(points-1,i+1)){
+          swap=madeSwap=true;
+          opt3swap(i,j,points-1);
+        }
+        
+        for(int k=j+2;k<points-1;k++){
+          //cout<<"check "<<i<<","<<j<<","<<k<<endl;
+          if(opt3check(i,j,k)){
+            //cout<<"Swap!"<<endl;
+            swap=madeSwap=true;
+            opt3swap(i,j,k);
+          }
+        }
+      }
+    }
+  }while(madeSwap);
+  
+  updateLength();
+  
+  return swap;
+}
+
+void Tour::LinKern() {
+  bool madeSwap;
+  
+  do{
+    madeSwap=false;
+    if(opt2()||opt3()) madeSwap=true;
+  }while(madeSwap);
+}
